@@ -1,8 +1,29 @@
 import React from 'react';
 
 export default class CRUForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      txtName: '',
+      sltStatus: false
+    };
+  }
+
   onClickClose = () => {
     this.props.onCloseForm();
+  };
+
+  onChange = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    this.setState({
+      [name]: value
+    });
+  };
+
+  onHandleSave = (event) => {
+    event.preventDefault();
+    this.props.onSaveData(this.state);
   };
 
   render() {
@@ -13,21 +34,21 @@ export default class CRUForm extends React.Component {
           <i className="fa fa-times-circle text-right" onClick={this.onClickClose} />
         </div>
         <div className="card-body">
-          <form>
+          <form onSubmit={this.onHandleSave}>
             <div className="form-group">
               <label>Name</label>
-              <input type="text" name="" className="form-control" placeholder="" />
+              <input type="text" name="txtName" className="form-control" value={this.state.txtName} onChange={this.onChange} />
             </div>
 
             <div className="form-group">
               <label>Status</label>
-              <select className="form-control" name="">
-                <option value="true">Active</option>
-                <option value="false">Hide</option>
+              <select className="form-control" name="sltStatus" value={this.state.sltStatus} onChange={this.onChange}>
+                <option value={true}>Active</option>
+                <option value={false}>Hide</option>
               </select>
             </div>
             <div className="button-inline">
-              <button type="button" className="btn btn-primary">
+              <button type="submit" className="btn btn-primary">
                 Save
               </button>
               <button type="button" className="btn btn-secondary">

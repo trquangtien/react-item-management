@@ -71,6 +71,21 @@ export default class App extends React.Component {
     });
   };
 
+  handleSaveData = (data) => {
+    const dataSubmit = {
+      id: this.commonService.generateKey(),
+      name: data.txtName,
+      status: data.sltStatus === 'true' ? true : false
+    };
+
+    let newArrItem = Object.assign([], this.state.arrItem);
+    newArrItem.push(dataSubmit);
+
+    this.setState({ arrItem: newArrItem });
+
+    localStorage.setItem('lsArrItem', JSON.stringify(newArrItem));
+  };
+
   render() {
     return (
       <div className="container">
@@ -82,7 +97,7 @@ export default class App extends React.Component {
         <div className="row">
           {this.state.isDisplayCRUForm ? (
             <div className="col-md-4">
-              <CRUForm onCloseForm={this.handleCloseCRUForm} />
+              <CRUForm onSaveData={this.handleSaveData} onCloseForm={this.handleCloseCRUForm} />
             </div>
           ) : (
             ''
