@@ -3,6 +3,11 @@ import Item from './item.component';
 
 export default class ItemList extends React.Component {
   render() {
+    const { arrItem } = this.props;
+    const itemListElm = arrItem.map((item, index) => {
+      return <Item key={item.id} index={index} item={item} />;
+    });
+
     return (
       <table className="table">
         <thead>
@@ -28,24 +33,8 @@ export default class ItemList extends React.Component {
             </td>
             <td />
           </tr>
-          <Item />
-          <tr>
-            <td>2</td>
-            <td>Apple iPhone X</td>
-            <td>
-              <span className="badge badge-secondary">Hide</span>
-            </td>
-            <td>
-              <div className="button-inline">
-                <button type="button" className="btn btn-primary">
-                  Edit
-                </button>
-                <button type="button" className="btn btn-secondary">
-                  Delete
-                </button>
-              </div>
-            </td>
-          </tr>
+
+          {itemListElm}
         </tbody>
       </table>
     );
