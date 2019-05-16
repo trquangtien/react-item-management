@@ -37,5 +37,10 @@
 }
 
 .mt-10 {
-  margin-top: 10px
+  margin-top: 10px;
+}
+
+.text-right {
+  float: right;
+  cursor: pointer;
 }

@@ -1,10 +1,17 @@
 import React from 'react';
 
 export default class CRUForm extends React.Component {
+  onClickClose = () => {
+    this.props.onCloseForm();
+  };
+
   render() {
     return (
       <div className="card">
-        <div className="card-header">Add new item</div>
+        <div className="card-header">
+          Add new item
+          <i className="fa fa-times-circle text-right" onClick={this.onClickClose} />
+        </div>
         <div className="card-body">
           <form>
             <div className="form-group">

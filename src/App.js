@@ -12,7 +12,8 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      arrItem: []
+      arrItem: [],
+      isDisplayCRUForm: false
     };
 
     this.commonService = new CommonService();
@@ -58,6 +59,18 @@ export default class App extends React.Component {
     localStorage.setItem('lsArrItem', JSON.stringify(arrItemSampleData));
   };
 
+  toggleNewItemForm = () => {
+    this.setState({
+      isDisplayCRUForm: !this.state.isDisplayCRUForm
+    });
+  };
+
+  handleCloseCRUForm = () => {
+    this.setState({
+      isDisplayCRUForm: false
+    });
+  };
+
   render() {
     return (
       <div className="container">
@@ -67,12 +80,16 @@ export default class App extends React.Component {
         </div>
 
         <div className="row">
-          <div className="col-md-4">
-            <CRUForm />
-          </div>
+          {this.state.isDisplayCRUForm ? (
+            <div className="col-md-4">
+              <CRUForm onCloseForm={this.handleCloseCRUForm} />
+            </div>
+          ) : (
+            ''
+          )}
 
-          <div className="col-md-8">
-            <button type="button" className="btn btn-primary">
+          <div className={this.state.isDisplayCRUForm ? 'col-md-8' : 'col-md-12'}>
+            <button type="button" className="btn btn-primary" onClick={this.toggleNewItemForm}>
               Add new item
             </button>
 
