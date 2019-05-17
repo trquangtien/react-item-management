@@ -9,7 +9,7 @@ export default class CRUForm extends React.Component {
     };
   }
 
-  onClickClose = () => {
+  closeForm = () => {
     this.props.onCloseForm();
   };
 
@@ -24,6 +24,17 @@ export default class CRUForm extends React.Component {
   onHandleSave = (event) => {
     event.preventDefault();
     this.props.onSaveData(this.state);
+
+    // Clear and Close form
+    this.clearData();
+    this.closeForm();
+  };
+
+  clearData = () => {
+    this.setState({
+      txtName: '',
+      sltStatus: false
+    });
   };
 
   render() {
@@ -31,7 +42,7 @@ export default class CRUForm extends React.Component {
       <div className="card">
         <div className="card-header">
           Add new item
-          <i className="fa fa-times-circle text-right" onClick={this.onClickClose} />
+          <i className="fa fa-times-circle text-right" onClick={this.closeForm} />
         </div>
         <div className="card-body">
           <form onSubmit={this.onHandleSave}>
@@ -51,7 +62,7 @@ export default class CRUForm extends React.Component {
               <button type="submit" className="btn btn-primary">
                 Save
               </button>
-              <button type="button" className="btn btn-secondary">
+              <button type="button" className="btn btn-secondary" onClick={this.clearData}>
                 Cancel
               </button>
             </div>
