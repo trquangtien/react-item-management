@@ -86,6 +86,23 @@ export default class App extends React.Component {
     localStorage.setItem('lsArrItem', JSON.stringify(newArrItem));
   };
 
+  onUpdateStatus = (id) => {
+    let { arrItem } = this.state;
+
+    let updatedArrItem = Object.assign([], arrItem);
+    updatedArrItem.forEach((item) => {
+      if (item.id === id) {
+        item.status = !item.status;
+      }
+    });
+
+    this.setState({
+      arrItem: updatedArrItem
+    });
+
+    localStorage.setItem('lsArrItem', JSON.stringify(updatedArrItem));
+  };
+
   render() {
     return (
       <div className="container">
@@ -123,7 +140,7 @@ export default class App extends React.Component {
 
             <div className="row mt-10">
               <div className="col-md-12">
-                <ItemList arrItem={this.state.arrItem} />
+                <ItemList arrItem={this.state.arrItem} onUpdateStatus={this.onUpdateStatus} />
               </div>
             </div>
           </div>
