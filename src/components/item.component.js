@@ -6,6 +6,11 @@ export default class Item extends React.Component {
     this.props.onUpdateStatus(id);
   };
 
+  onDeleteItem = () => {
+    const { id } = this.props.item;
+    this.props.onDeleteItem(id);
+  };
+
   render() {
     const { item, index } = this.props;
 
@@ -29,7 +34,7 @@ export default class Item extends React.Component {
             <button type="button" className="btn btn-primary">
               Edit
             </button>
-            <button type="button" className="btn btn-secondary">
+            <button type="button" className="btn btn-secondary" onClick={this.onDeleteItem}>
               Delete
             </button>
           </div>

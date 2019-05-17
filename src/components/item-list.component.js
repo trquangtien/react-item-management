@@ -5,7 +5,9 @@ export default class ItemList extends React.Component {
   render() {
     const { arrItem } = this.props;
     const itemListElm = arrItem.map((item, index) => {
-      return <Item key={item.id} index={index} item={item} onUpdateStatus={this.props.onUpdateStatus} />;
+      return (
+        <Item key={item.id} index={index} item={item} onUpdateStatus={this.props.onUpdateStatus} onDeleteItem={this.props.onDeleteItem} />
+      );
     });
 
     return (
