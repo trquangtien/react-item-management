@@ -17,7 +17,8 @@ export default class App extends React.Component {
       editingItem: null,
       filters: {
         name: '',
-        status: -1
+        status: -1,
+        keyword: ''
       }
     };
 
@@ -167,16 +168,29 @@ export default class App extends React.Component {
     });
   };
 
+  handleSearch = (keyword) => {
+    this.setState({
+      filters: {
+        keyword: keyword
+      }
+    });
+  };
+
   render() {
     let { arrItem, filters } = this.state;
 
+    // For keyword
+    if (filters.keyword) {
+      arrItem = arrItem.filter((item) => item.name.toLowerCase().indexOf(filters.keyword.toLowerCase()) !== -1);
+    }
+
     // For filter name
     if (filters.name) {
-      arrItem = arrItem.filter((item) => item.name.toLowerCase().indexOf(filters.name) !== -1);
+      arrItem = arrItem.filter((item) => item.name.toLowerCase().indexOf(filters.name.toLowerCase()) !== -1);
     }
 
     // For filter status
-    if (filters.status !== -1) {
+    if (filters.status && filters.status !== -1) {
       arrItem = arrItem.filter((item) => {
         const filterStatus = filters.status === 1 ? true : false;
         return item.status === filterStatus;
@@ -210,7 +224,7 @@ export default class App extends React.Component {
 
             <div className="row mt-10">
               <div className="col-md-6">
-                <Search />
+                <Search onSearch={this.handleSearch} />
               </div>
               <div className="col-md-6">
                 <Sort />
