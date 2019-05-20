@@ -13,14 +13,14 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       arrItem: [],
-      isDisplayCRUForm: false
+      isDisplayCRUForm: false,
+      editingItem: null
     };
 
     this.commonService = new CommonService();
   }
 
   componentWillMount() {
-    console.log(`componentWillMount`);
     if (localStorage && localStorage.getItem('lsArrItem')) {
       const arrItem = JSON.parse(localStorage.getItem('lsArrItem'));
       this.setState({ arrItem: arrItem });
@@ -60,10 +60,24 @@ export default class App extends React.Component {
   };
 
   toggleNewItemForm = () => {
-    this.setState({
-      isDisplayCRUForm: !this.state.isDisplayCRUForm
-    });
+    if (this.state.editingItem) {
+      this.setState({
+        isDisplayCRUForm: true,
+        editingItem: null
+      });
+    } else {
+      this.setState({
+        isDisplayCRUForm: !this.state.isDisplayCRUForm,
+        editingItem: null
+      });
+    }
   };
+
+  showForm() {
+    this.setState({
+      isDisplayCRUForm: true
+    });
+  }
 
   handleCloseCRUForm = () => {
     this.setState({
@@ -72,17 +86,26 @@ export default class App extends React.Component {
   };
 
   handleSaveData = (data) => {
-    const dataSubmit = {
-      id: this.commonService.generateKey(),
-      name: data.txtName,
-      status: data.sltStatus === 'true' ? true : false
-    };
-
     let newArrItem = Object.assign([], this.state.arrItem);
-    newArrItem.push(dataSubmit);
+
+    if (data.id) {
+      newArrItem.forEach((item) => {
+        if (item.id === data.id) {
+          item.name = data.txtName;
+          item.status = data.sltStatus === 'true' ? true : false;
+        }
+      });
+    } else {
+      const dataSubmit = {
+        id: this.commonService.generateKey(),
+        name: data.txtName,
+        status: data.sltStatus === 'true' ? true : false
+      };
+
+      newArrItem.push(dataSubmit);
+    }
 
     this.setState({ arrItem: newArrItem });
-
     localStorage.setItem('lsArrItem', JSON.stringify(newArrItem));
   };
 
@@ -101,6 +124,16 @@ export default class App extends React.Component {
     });
 
     localStorage.setItem('lsArrItem', JSON.stringify(updatedArrItem));
+  };
+
+  onEditItem = (id) => {
+    let { arrItem } = this.state;
+    const currentItem = arrItem.find((item) => item.id === id);
+    this.setState({
+      editingItem: currentItem
+    });
+
+    this.showForm();
   };
 
   onDeleteItem = (id) => {
@@ -131,7 +164,7 @@ export default class App extends React.Component {
         <div className="row">
           {this.state.isDisplayCRUForm ? (
             <div className="col-md-4">
-              <CRUForm onSaveData={this.handleSaveData} onCloseForm={this.handleCloseCRUForm} />
+              <CRUForm onSaveData={this.handleSaveData} onCloseForm={this.handleCloseCRUForm} item={this.state.editingItem} />
             </div>
           ) : (
             ''
@@ -157,7 +190,12 @@ export default class App extends React.Component {
 
             <div className="row mt-10">
               <div className="col-md-12">
-                <ItemList arrItem={this.state.arrItem} onUpdateStatus={this.onUpdateStatus} onDeleteItem={this.onDeleteItem} />
+                <ItemList
+                  arrItem={this.state.arrItem}
+                  onUpdateStatus={this.onUpdateStatus}
+                  onEditItem={this.onEditItem}
+                  onDeleteItem={this.onDeleteItem}
+                />
               </div>
             </div>
           </div>

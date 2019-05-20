@@ -4,9 +4,39 @@ export default class CRUForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      id: '',
       txtName: '',
       sltStatus: false
     };
+  }
+
+  componentWillMount() {
+    const { item } = this.props;
+    if (item) {
+      this.setState({
+        id: item.id,
+        txtName: item.name,
+        sltStatus: item.status
+      });
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps && nextProps.item) {
+      this.setState({
+        id: nextProps.item.id,
+        txtName: nextProps.item.name,
+        sltStatus: nextProps.item.status
+      });
+    }
+
+    if (nextProps && !nextProps.item) {
+      this.setState({
+        id: '',
+        txtName: '',
+        sltStatus: false
+      });
+    }
   }
 
   closeForm = () => {
@@ -38,10 +68,11 @@ export default class CRUForm extends React.Component {
   };
 
   render() {
+    const { id } = this.state;
     return (
       <div className="card">
         <div className="card-header">
-          Add new item
+          {id ? 'Edit Item' : 'Add new item'}
           <i className="fa fa-times-circle text-right" onClick={this.closeForm} />
         </div>
         <div className="card-body">

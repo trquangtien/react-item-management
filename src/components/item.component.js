@@ -6,6 +6,11 @@ export default class Item extends React.Component {
     this.props.onUpdateStatus(id);
   };
 
+  onEditItem = () => {
+    const { id } = this.props.item;
+    this.props.onEditItem(id);
+  };
+
   onDeleteItem = () => {
     const { id } = this.props.item;
     this.props.onDeleteItem(id);
@@ -31,7 +36,7 @@ export default class Item extends React.Component {
         </td>
         <td>
           <div className="button-inline">
-            <button type="button" className="btn btn-primary">
+            <button type="button" className="btn btn-primary" onClick={this.onEditItem}>
               Edit
             </button>
             <button type="button" className="btn btn-secondary" onClick={this.onDeleteItem}>
