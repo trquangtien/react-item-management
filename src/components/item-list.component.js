@@ -2,6 +2,28 @@ import React from 'react';
 import Item from './item.component';
 
 export default class ItemList extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      txtNameFilter: '',
+      sltStatusFilter: -1
+    };
+  }
+
+  onHandleChange = (event) => {
+    const { name, value } = event.target;
+
+    this.props.onFilterItem(
+      name === 'txtNameFilter' ? value : this.state.txtNameFilter,
+      name === 'sltStatusFilter' ? value : this.state.sltStatusFilter
+    );
+
+    this.setState({
+      [name]: value
+    });
+  };
+
   render() {
     const { arrItem } = this.props;
     const itemListElm = arrItem.map((item, index) => {
@@ -31,13 +53,19 @@ export default class ItemList extends React.Component {
           <tr>
             <td />
             <td>
-              <input type="text" className="form-control" name="" placeholder="" />
+              <input
+                type="text"
+                className="form-control"
+                name="txtNameFilter"
+                value={this.state.txtNameFilter}
+                onChange={this.onHandleChange}
+              />
             </td>
             <td>
-              <select className="form-control" name="">
-                <option value="true">All</option>
-                <option value="true">Active</option>
-                <option value="false">Hide</option>
+              <select className="form-control" name="sltStatusFilter" value={this.state.sltStatusFilter} onChange={this.onHandleChange}>
+                <option value="-1">All</option>
+                <option value="1">Active</option>
+                <option value="0">Hide</option>
               </select>
             </td>
             <td />

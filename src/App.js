@@ -14,7 +14,11 @@ export default class App extends React.Component {
     this.state = {
       arrItem: [],
       isDisplayCRUForm: false,
-      editingItem: null
+      editingItem: null,
+      filters: {
+        name: '',
+        status: -1
+      }
     };
 
     this.commonService = new CommonService();
@@ -153,7 +157,32 @@ export default class App extends React.Component {
     localStorage.setItem('lsArrItem', JSON.stringify(updatedArrItem));
   };
 
+  onFilterItem = (nameParam, statusParam) => {
+    statusParam = parseInt(statusParam);
+    this.setState({
+      filters: {
+        name: nameParam,
+        status: statusParam
+      }
+    });
+  };
+
   render() {
+    let { arrItem, filters } = this.state;
+
+    // For filter name
+    if (filters.name) {
+      arrItem = arrItem.filter((item) => item.name.toLowerCase().indexOf(filters.name) !== -1);
+    }
+
+    // For filter status
+    if (filters.status !== -1) {
+      arrItem = arrItem.filter((item) => {
+        const filterStatus = filters.status === 1 ? true : false;
+        return item.status === filterStatus;
+      });
+    }
+
     return (
       <div className="container">
         <div className="text-center">
@@ -191,10 +220,11 @@ export default class App extends React.Component {
             <div className="row mt-10">
               <div className="col-md-12">
                 <ItemList
-                  arrItem={this.state.arrItem}
+                  arrItem={arrItem}
                   onUpdateStatus={this.onUpdateStatus}
                   onEditItem={this.onEditItem}
                   onDeleteItem={this.onDeleteItem}
+                  onFilterItem={this.onFilterItem}
                 />
               </div>
             </div>
