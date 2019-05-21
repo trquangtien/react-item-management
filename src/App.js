@@ -5,6 +5,7 @@ import Search from './components/search.component';
 import Sort from './components/sort.component';
 import ItemList from './components/item-list.component';
 import CommonService from './services/common.service';
+import _ from 'lodash';
 
 export default class App extends React.Component {
   commonService;
