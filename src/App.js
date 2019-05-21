@@ -19,6 +19,10 @@ export default class App extends React.Component {
         name: '',
         status: -1,
         keyword: ''
+      },
+      sort: {
+        by: 'name',
+        value: 1
       }
     };
 
@@ -176,8 +180,18 @@ export default class App extends React.Component {
     });
   };
 
+  handleSort = (sortBy, sortValue) => {
+    console.log(`handleSort`, sortBy, sortValue);
+    this.setState({
+      sort: {
+        by: sortBy,
+        value: sortValue
+      }
+    });
+  };
+
   render() {
-    let { arrItem, filters } = this.state;
+    let { arrItem, filters, sort } = this.state;
 
     // For keyword
     if (filters.keyword) {
@@ -194,6 +208,24 @@ export default class App extends React.Component {
       arrItem = arrItem.filter((item) => {
         const filterStatus = filters.status === 1 ? true : false;
         return item.status === filterStatus;
+      });
+    }
+
+    // Sort by name
+    if (sort.by === 'name') {
+      arrItem = arrItem.sort((a, b) => {
+        if (a.name > b.name) return sort.value;
+        else if (a.name < b.name) return -sort.value;
+        else return 0;
+      });
+    }
+
+    // Sort by status
+    if (sort.by === 'status') {
+      arrItem = arrItem.sort((a, b) => {
+        if (a.status < b.status) return sort.value;
+        else if (a.status > b.status) return -sort.value;
+        else return 0;
       });
     }
 
@@ -227,7 +259,7 @@ export default class App extends React.Component {
                 <Search onSearch={this.handleSearch} />
               </div>
               <div className="col-md-6">
-                <Sort />
+                <Sort onSort={this.handleSort} />
               </div>
             </div>
 

@@ -44,3 +44,12 @@
   float: right;
   cursor: pointer;
 }
+
+.sort_selected::after {
+  content: '\f00c'; /* http://astronautweb.co/snippet/font-awesome/ */
+  font-family: 'Font Awesome\ 5 Free';
+  font-weight: 900;
+  font-style: normal;
+  margin: 0px 0px 0px 10px;
+  display: inline-block;
+}
